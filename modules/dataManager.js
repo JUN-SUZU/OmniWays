@@ -1,12 +1,12 @@
 const fs = require('fs');
 module.exports = class DataManager {
     constructor() {
-        this.discordServerData = JSON.parse(fs.readFileSync('./data/discordServerData.json', 'utf8'));
-        this.minecraftServerData = JSON.parse(fs.readFileSync('./data/minecraftServerData.json', 'utf8'));
+        this.userWallets = JSON.parse(fs.readFileSync('./data/userWallets.json', 'utf8'));
+        this.coinbase = JSON.parse(fs.readFileSync('./data/coinbase.json', 'utf8'));
     }
     saveData(type) {
-        if (type === 'discord') {
-            fs.writeFileSync('./data/discordServerData.json', JSON.stringify(this.discordServerData, null, 4), 'utf8');
+        if (type === 'userWallets') {
+            fs.writeFileSync('./data/userWallets.json', JSON.stringify(this.userWallets, null, 4));
         }
     }
 }
