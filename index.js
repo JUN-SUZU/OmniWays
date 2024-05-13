@@ -117,7 +117,7 @@ const server = https.createServer(options, (req, res) => {
                     if (data.type === 'sell') {
                         // 売却処理
                         dataManager.userWallets[data.userID].coins += totalPrice;
-                        dataManager.coinbase[coinbaseIndex].price -= Math.round(data.amount * 0.1 + Math.random() * 10);
+                        dataManager.coinbase[coinbaseIndex].price -= Math.round(data.amount * 0.1 + Math.random());
                         res.writeHead(200);
                         res.end();
                     }
@@ -125,7 +125,7 @@ const server = https.createServer(options, (req, res) => {
                         // 購入処理
                         if (dataManager.userWallets[data.userID].coins >= totalPrice) {
                             dataManager.userWallets[data.userID].coins -= totalPrice;
-                            dataManager.coinbase[coinbaseIndex].price += Math.round(data.amount * 0.1 + Math.random() * 10);
+                            dataManager.coinbase[coinbaseIndex].price += Math.round(data.amount * 0.1 + Math.random());
                             res.writeHead(200);
                             res.end();
                         }
@@ -134,6 +134,7 @@ const server = https.createServer(options, (req, res) => {
                         res.writeHead(400);
                         res.end(JSON.stringify({ error: 'Bad Request' }));
                     }
+                    dataManager.saveData('userWallets');
                 }
             }
             res.writeHead(404);
@@ -161,11 +162,6 @@ function getIPadr(req) {
 };
 
 // Schedule Cron Job
-
-// every 5 minutes
-cron.schedule('*/5 * * * *', () => {
-    dataManager.saveData('userWallets');
-});
 
 // every day at 00:00
 cron.schedule('0 0 * * *', () => {
